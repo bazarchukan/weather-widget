@@ -32,9 +32,11 @@ export const useWeatherStore = defineStore("weather", {
     async addWeatherItemByUserLocation() {
       const { getUserCoordinates } = useLocation();
 
-      const userCoordinates = await getUserCoordinates();
+      const userCoordinates = await getUserCoordinates();  
 
-      await this.addWeatherItemByCoordinates(userCoordinates.latitude, userCoordinates.longitude);
+      if (userCoordinates) {
+        await this.addWeatherItemByCoordinates(userCoordinates.latitude, userCoordinates.longitude);
+      }
     },
 
     async addWeatherItemByName(name: string) {

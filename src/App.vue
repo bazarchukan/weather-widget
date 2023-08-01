@@ -32,14 +32,24 @@ import Settings from "@/components/Settings/Settings.vue";
 const appStore = useAppStore();
 const weatherStore = useWeatherStore();
 
+weatherStore.$subscribe((mutation, state) => {  
+  localStorage.setItem('weather', JSON.stringify(state)); 
+})
+
 onMounted(async () => {
-  try {
-    await weatherStore.addWeatherItemByUserLocation();
-  } catch (e) {
-    if (e instanceof Error) {
-      appStore.error = e.message;
-    } else {
-      appStore.error = String(e);
+  const weatherStorage = localStorage.getItem('weather');
+  
+  if (weatherStorage) {
+    weatherStore.items = JSON.parse(weatherStorage).items;
+  } else {
+    try {
+      await weatherStore.addWeatherItemByUserLocation();
+    } catch (e) {
+      if (e instanceof Error) {
+        appStore.error = e.message;
+      } else {
+        appStore.error = String(e);
+      }
     }
   }
 });

@@ -1,5 +1,5 @@
 export function useLocation() {
-  async function getUserCoordinates(): Promise<GeolocationCoordinates> {
+  async function getUserCoordinates(): Promise<GeolocationCoordinates | void> {
     return await new Promise(resolve => {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -7,6 +7,7 @@ export function useLocation() {
         },
         error => {
           console.warn(error.message);
+          resolve()
         }
       )
     })
