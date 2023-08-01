@@ -1,27 +1,46 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="widget">
+    <template v-if="!appStore.isConfigured && weatherStore.items.length">
+      <Weather />
+
+      <img
+        @click="appStore.isConfigured = true"
+        src="@/assets/images/gear.png"
+        class="widget-gear-icon"
+      >
+    </template>
+
+    <template v-else>
+      <Settings />
+
+      <img
+        @click="appStore.isConfigured = false"
+        src="@/assets/images/close.png"
+        class="widget-close-icon"
+      >
+    </template>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useAppStore } from "@/store/app";
+import { useWeatherStore } from "@/store/weather";
+import Weather from "@/components/Weather/Weather.vue";
+import Settings from "@/components/Settings/Settings.vue";
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
+const appStore = useAppStore();
+const weatherStore = useWeatherStore();
+
+onMounted(async () => {
+  try {
+    await weatherStore.addWeatherItemByUserLocation();
+  } catch (e) {
+    if (e instanceof Error) {
+      appStore.error = e.message;
+    } else {
+      appStore.error = String(e);
+    }
   }
 });
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

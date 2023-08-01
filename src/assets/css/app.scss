@@ -1,0 +1,16 @@
+@import "variables.scss";
+@import "mixins.scss";
+@import "widget.scss";
+
+.error {
+  padding: 5px;
+  border-radius: 8px;
+  color: $color-danger;
+  background: rgba($color: $color-danger, $alpha: 0.2);
+}
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: default;
+}
