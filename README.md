@@ -5,9 +5,7 @@
 npm install
 ```
 
-```
 Move .env.example to .env and put your OpenWeather API key in VUE_APP_WEATHER_API_KEY
-```
 
 ### Compiles and hot-reloads for development
 ```
